@@ -1,0 +1,36 @@
+﻿body
+{
+	font: 75%/1.6 Georgia, Arial, Helvetica, Verdana Sans-serif;
+    color:#fff;
+}
+a, a:visited, a:active {
+	color:#00aacc;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:underline;
+}
+h1,h2,h3,h4 {
+    font-weight:bold;
+    line-height:1.1;
+}
+h1 {
+    font-size:200%;
+    margin:.85em 0 .5em;
+}
+h2 {
+    font-size:150%;
+    margin:0 0 .43em;
+}
+h3 {
+    font-size:133.3%;
+    margin:1.1em 0 .43em;
+}
+h4 {
+    margin:1.1em 0 .43em;
+}
+p
+{
+	padding: 0.538em 0 0 0;
+	margin: 0 0 1.077em 0;
+}
