@@ -1,49 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Stormbreaker.Dashboard;
-using Stormbreaker.Persistence;
-using Stormbreaker.Web.Mvc;
+using EckeSnuff.Dropbox;
+using EckeSnuff.Dropbox.Hosting;
 
 namespace EckeSnuff {
+    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
+    // visit http://go.microsoft.com/?LinkId=9394801
+
     public class MvcApplication : System.Web.HttpApplication {
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
+            filters.Add(new HandleErrorAttribute());
+        }
+
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("dropbox/{*pathInfo}");
+            routes.MapRoute(
+                "Ajax_Handler",
+                "ajax/{action}/{ticks}",
+                new {controller = "Ajax", action = "index", ticks = ""}
+                );
 
-            //routes.MapRoute("Eckesnuff_Default", "", new { controller = "Home", action = "Index", pagePath = "Home" });
+            routes.MapRoute(
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                );
+                System.Web.Hosting.HostingEnvironment.RegisterVirtualPathProvider(
+                new DropboxVirtualPathProvider(new DropboxService(ConfigurationManager.AppSettings["DropboxAppKey"],
+                                                                  ConfigurationManager.AppSettings["DropboxAppSecret"],
+                                                                  ConfigurationManager.AppSettings["DropboxUserName"],
+                                                                  ConfigurationManager.AppSettings["DropboxPassword"])));
+        }
 
-        }
-        private static void RegisterViewEngines(ICollection<IViewEngine> engines) {
-            engines.Add(new WebFormViewEngine {
-                                                  AreaViewLocationFormats = new[] { "~/Packages/{2}/Views/{1}/{0}.aspx" },
-                                                  AreaMasterLocationFormats = new[] { "~/Packages/{2}/Views/Shared/{0}.aspx" },
-                                                  AreaPartialViewLocationFormats = new[] { "~/Packages/{2}/Views/{1}/{0}.ascx", "~/Packages/{2}/Views/Shared/{0}.ascx" }
-                                              });
-        }
         protected void Application_Start() {
-            //AreaRegistration.RegisterAllAreas();
+            AreaRegistration.RegisterAllAreas();
 
-            //// TODO fix priority for routes
-            var area1Reg = new DashboardAreaRegistration();
-            var area1Context = new AreaRegistrationContext(area1Reg.AreaName, RouteTable.Routes);
-            area1Reg.RegisterArea(area1Context);
-
-            //var area2Reg = new BlogAreaRegistration();
-            //var area2Context = new AreaRegistrationContext(area2Reg.AreaName, RouteTable.Routes);
-            //area2Reg.RegisterArea(area2Context);
-
-            var area3Reg = new EckeSnuffRegistration();
-            var area3Context = new AreaRegistrationContext(area3Reg.AreaName, RouteTable.Routes);
-            area3Reg.RegisterArea(area3Context);
-
-
-
-            Bootstrapper.Bootstrap();
+            RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-            ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());
-            ModelMetadataProviders.Current = new SortOrderDataAnnotationsModelMetadataProvider();
-            RegisterViewEngines(ViewEngines.Engines);
-
         }
     }
 }

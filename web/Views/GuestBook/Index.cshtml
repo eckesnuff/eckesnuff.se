@@ -1,0 +1,21 @@
+﻿@model EckeSnuff.ViewModels.GuestBookViewModel
+    @using (Html.BeginForm("comment", "GuestBook",new {model=Model.CurrentModel}, FormMethod.Post)) {
+
+            <div class="comment-form">
+                @Html.EditorFor(x => x.CurrentComment)
+                <div class="editor-button">
+                    <input type="submit" value="Comment" />
+                </div>
+            </div>            
+    }
+    <h2>Comments</h2>
+    <ul class="entries">
+    @Html.Partial("CommentList",Model)
+    </ul>
+    <ol class="paging">
+        @for(var i = 1; i <= Math.Ceiling(Model.Comments.Count()/3.0); i++) {
+            <li @(i==Model.CurrentPage)?class="selected":>
+            @Html.ActionLink(i.ToString(), "index", new {model=Model.CurrentModel, page = i })
+        </li>
+        }
+    </ol>

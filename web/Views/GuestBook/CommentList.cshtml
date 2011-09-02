@@ -1,0 +1,8 @@
+﻿@model EckeSnuff.ViewModels.GuestBookViewModel
+
+@foreach (var comment in Model.Comments.OrderByDescending(x => x.PublishDate).Skip((Model.CurrentPage - 1)*3).Take(3)) {
+        <li>
+            <div class="meta"><span class="name">@comment.Author</span><span class="time">@comment.PublishDate.ToString("yyyy-MM-dd HH:mm:ss")</span></div>
+            <p>@comment.CommentContent</p>
+         </li>
+}

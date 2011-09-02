@@ -1,0 +1,34 @@
+﻿@model EckeSnuff.Dropbox.Hosting.DropboxVirtualDirectory
+
+@{
+    ViewBag.Title = "Index";
+    Layout=null;
+}
+<div class="overlay">
+    <aside>
+<h1>Select directory</h1>
+<h2>directories</h2>
+@foreach (EckeSnuff.Dropbox.Hosting.DropboxVirtualFile file in Model.Files) {
+    <div>
+    <strong>@file.Name</strong><br />
+    Size: @file.FileSize <br />
+    Changed: @file.Changed
+    </div>
+}
+
+<h2>Dirs</h2>
+@foreach (EckeSnuff.Dropbox.Hosting.DropboxVirtualDirectory dir in Model.Directories) {
+    <div>
+    <strong>@dir.Name</strong><br />
+    </div>
+    <h4>files</h4>
+    foreach (EckeSnuff.Dropbox.Hosting.DropboxVirtualFile file in dir.Files) {
+        <div>
+        <strong>@file.Name</strong><br />
+        Size: @file.FileSize <br />
+        Changed: @file.Changed
+        </div>
+    }
+}
+</aside>
+</div>

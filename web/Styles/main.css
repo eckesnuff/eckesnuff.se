@@ -1,0 +1,172 @@
+﻿body{
+	background: #0a0a0a url(/images/bg.jpg) 40% 0 no-repeat;
+	-webkit-background-size: 2110px 1320px
+}
+#content
+{
+	width:960px;
+	margin:auto;
+	min-height:800px;
+	position:relative;
+}
+#content .logo {
+margin-top:5em;
+padding-left:12em;
+}
+ul#nav{
+	position:absolute;
+	top:300px;
+}
+
+ul#nav a {
+	padding:.5em .5em .5em 0;
+	font-size:1.167em;
+	display:block;
+	color:#fff;
+}
+ul#nav li.item_1 a{
+	margin-left:0px;
+}
+ul#nav li.item_2 a{
+	margin-left:15px;
+}
+ul#nav li.item_3 a{
+	margin-left:30px;
+}
+#content .main{
+	padding:1em;
+	width:50%;
+	margin:130px 0 0 180px;
+	margin-left:180px;
+}
+#content .main p{
+	margin-left:4em;
+}
+
+#footer {
+	padding:1em;
+	border: 5px solid #1d1d1d;
+	border-width:5px 0;
+}
+#footer ul {
+	overflow:hidden;
+	margin:auto;
+	width:960px;
+}
+#footer ul li {
+	border:1px solid #000000;
+	float:left;
+	margin-right:3px;
+}
+#content .additional{
+	-moz-border-radius:10px 10px 10px 10px;
+	-webkit-border-radius:10px 10px 10px 10px;
+	border-radius:10px 10px 10px 10px;
+	background:none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+	border:1px solid #000000;
+	padding:1em;
+	position:absolute;
+	right:0;
+	top:150px;
+	width:210px;
+}
+#content .additional li
+{
+	margin-bottom:1em;border-bottom:1px solid #000000;
+	margin-bottom:10px;
+	padding-bottom:5px;
+}
+#content .additional li .ticks
+{
+	display:none;
+}
+#content .additional li a
+{
+	color:#00aacc;
+}
+#content .additional .twitter
+{
+	position:absolute;
+	right:-15px;
+	top:-51px;
+}
+
+.comment-form{
+	-moz-border-radius:10px 10px 10px 10px;
+	-webkit-border-radius:10px 10px 10px 10px;
+	border-radius:10px 10px 10px 10px;
+	background:none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+	border:1px solid #000000;
+	padding:1em;
+	margin:1em 0;
+		
+}
+span.field-validation-error{
+	font-weight:bold;
+	color:#ff4a4a;
+	display:block;
+}
+.comment-form .editor-field
+{
+	margin-bottom:1em;
+}
+
+.editor-field input.text-box.single-line{
+	width:75%;
+	padding:0.5em 0;
+}
+.editor-field textarea.text-box.multi-line{
+	width:75%;
+	height:100px;
+}
+
+#content .main ul.entries p
+{
+	margin:0;
+	padding:0;
+}
+#content .main ul.entries li
+{
+	margin-bottom:1em;
+	padding:1em;
+	-moz-border-radius:10px 10px 10px 10px;
+	-webkit-border-radius:10px 10px 10px 10px;
+	border-radius:10px 10px 10px 10px;
+	background:none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+}
+ul.entries div.meta{
+	overflow:hidden;
+	margin-bottom:1em;
+	border-bottom:1px solid #000;
+	padding-bottom:2px;
+}
+ul.entries .name{
+	float:left;
+}
+ul.entries .time{
+	float:right;
+}
+h2{
+	margin-top:1em;
+}
+.paging
+{
+	overflow:hidden;
+	width:50%;
+	margin:0 auto;
+}
+.paging li
+{
+	font-size:150%;
+	float:left;
+	margin-right:2px;
+}
+.paging a,.paging span
+{
+	padding:.5em;
+	background-color:#000;
+}
+.paging li.selected a
+{
+	color:#fff;
+}

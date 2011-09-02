@@ -1,11 +1,11 @@
 ﻿$(document).ready(function() {
     setInterval(function() {
-        var ticks = $('.twitter li:first-child span.ticks').html();
+        var ticks = $('.twitter li:first-child').attr('class');
         $.ajax({ url: "/ajax/tweets/" + ticks, dataType: 'json', success: function(data) {
             var lastChild = $('.twitter li:last-child')
             $.each(data, function(i, item) {
                 $(lastChild).slideUp('slow', function() {
-                    $('.additional.twitter ul').prepend('<li>' + item.Description + '<span class="ticks">' + item.Ticks + '</span></li>');
+                    $('.additional.twitter ul').prepend('<li class="'+item.Ticks+'>' + item.Description +'</li>');
                     $('.twitter li:first-child').hide().slideDown('slow');
                     $(this).remove();
                 })
@@ -30,7 +30,7 @@
     });
     $('.paging a').live('click', function() {
         var anchor = $(this);
-        $.get(anchor.attr('href') + "/true", function(data) {
+        $.get(anchor.attr('href'), function(data) {
             $('ul.entries').fadeOut(function() {
                 $(this).html(data).fadeIn();
             });
@@ -40,5 +40,13 @@
         });
         return false;
     })
+
+    $('#footer li a').fancybox({
+		'transitionIn'	:	'elastic',
+		'transitionOut'	:	'elastic',
+		'speedIn'		:	600, 
+		'speedOut'		:	200, 
+		'overlayShow'	:	false
+	});
 
 });

@@ -1,0 +1,17 @@
+﻿@model BrickPile.UI.Web.ViewModels.IViewModel<BrickPile.Domain.Models.IPageModel>
+@using BrickPile.UI.Common
+<ul id="nav">
+@{var i = 0;}
+@foreach (var node in Model.StructureInfo.HierarchicalStructure) {
+    <li class="item_@(++i)">
+    @if (!node.Entity.Equals(Model.CurrentModel)) {
+        @Html.ActionLink(node.Entity);
+        
+    }
+    else {
+        @Html.ActionLink(node.Entity.Metadata.Name, "index", new { model = node.Entity }, new { @class = "selected" });
+    }
+    </li>
+}
+</ul>
+

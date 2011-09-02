@@ -1,0 +1,63 @@
+﻿@model EckeSnuff.ViewModels.IBaseViewModel<EckeSnuff.Models.BaseModel>
+@using System.Globalization;
+@using SquishIt.Framework;
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="@CultureInfo.CurrentCulture.TwoLetterISOLanguageName" lang="@CultureInfo.CurrentCulture.TwoLetterISOLanguageName">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@Model.Title</title>
+    <meta name="description" content="@Model.CurrentModel.MetaDescription" />
+    @Html.Raw(Bundle.Css()
+        .Add(Url.Content("~/Styles/reset.css"))
+        .Add(Url.Content("~/Styles/typography.css"))
+        .Add(Url.Content("~/Styles/main.css"))
+        .Add(Url.Content("~/Styles/jquery.fancybox-1.3.4.css"))
+        .Render("~/Styles/master.css"))
+    @Html.Raw(Bundle.JavaScript()
+        .Add(Url.Content("~/scripts/jquery-1.4.4.min.js"))
+        .Add(Url.Content("~/scripts/jquery.easing-1.3.js"))
+        .Add(Url.Content("~/scripts/jquery.mousewheel-3.0.4.js"))
+        .Add(Url.Content("~/scripts/jquery.fancybox-1.3.4.js"))
+        .Add(Url.Content("~/scripts/common.js"))
+        .Render("~/Scripts/master.js"))
+</head>
+<body>
+    <div id="content">
+        <a href="/"><img class="logo" src="@Url.Content("~/images/logo.png")" alt="eckesnuff.se" /></a>             
+        @Html.Partial("_Navigation")
+        <div class="main">
+            <h1>@Model.CurrentModel.Heading</h1>
+            @Html.Raw(Model.CurrentModel.Content)
+            @RenderBody()
+        </div>
+        <div class="additional twitter">
+            <a href="http://www.twitter.com/eckesnuff"><img class="twitter" src="@Url.Content("~/images/madtwitter.png")" alt="Follow me on twitter"/></a>
+            <ul>
+            @foreach (var tweet in Model.Tweets.Take(10) ) {
+                <li class="@tweet.Ticks">@Html.Raw(tweet.Description)</li>
+            }
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+    <ul>
+    @foreach(var item in Model.Flickr.Take(12)){
+        <li><a rel="gallery" href="@item.ImageLink" title="@item.ImgDescription"><img src="@item.Thumbnail" alt="@item.ImgDescription"/></a></li> 
+    }
+    </ul>
+    </div>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-4873946-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+</script>
+</body>
+</html>

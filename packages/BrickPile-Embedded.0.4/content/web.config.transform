@@ -1,0 +1,35 @@
+<configuration>
+
+  <appSettings>
+    <add key="Raven/PluginsDirectory" value="~\App_Data\Plugins" />
+  </appSettings>
+  
+  <connectionStrings>
+    <add name="RavenDB" connectionString="DataDir = ~\App_Data\Data"/>
+  </connectionStrings>
+  
+	<system.web>
+    <authentication mode="Forms">
+      <forms loginUrl="~/dashboard/account" timeout="2880" />
+    </authentication>
+    <membership defaultProvider="RavenDBMembership">
+      <providers>
+        <clear />
+        <add name="RavenDBMembership" applicationName="Stormbreaker" type="BrickPile.UI.Web.Security.RavenDBMembershipProvider, BrickPile.UI" />
+      </providers>
+    </membership>
+    <roleManager enabled="true" defaultProvider="RavenDBRole">
+      <providers>
+        <clear />
+        <add name="RavenDBRole" applicationName="Stormbreaker" type="BrickPile.UI.Web.Security.RavenDBRoleProvider, BrickPile.UI" />
+      </providers>
+    </roleManager>
+	</system.web>
+  
+	<system.webServer>
+		<modules runAllManagedModulesForAllRequests="true">
+      <add name="ContainerDisposal" type="BrickPile.UI.Web.ContainerDisposalModule, BrickPile.UI" />
+		</modules>
+	</system.webServer>
+  
+</configuration>
