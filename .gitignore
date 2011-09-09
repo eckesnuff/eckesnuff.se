@@ -27,7 +27,8 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-Web.config
+*Web.config
 [aA]reas*/
 App_Data*/
 web/Data*/
+Data2*/
