@@ -22,8 +22,8 @@ namespace EckeSnuff.Dropbox {
         public void ProcessRequest(HttpContext context) {
 
             var virtualFile =
-                (DropboxVirtualFile) HostingEnvironment.VirtualPathProvider.GetFile(context.Request.FilePath);
-            if (!virtualFile.Exists) {
+                HostingEnvironment.VirtualPathProvider.GetFile(context.Request.FilePath) as DropboxVirtualFile;
+            if (virtualFile==null|| !virtualFile.Exists) {
                 throw new HttpException(404, "File not found");
             }
             var lastWriteTime = File.GetLastWriteTime(virtualFile.PhysicalPath);

@@ -78,7 +78,7 @@ namespace EckeSnuff.Dropbox.Hosting {
                     return true;
                 }
                 try {
-                    return !string.IsNullOrEmpty(MetaData.Path);
+                    return !string.IsNullOrEmpty(MetaData.Path)&&!MetaData.Is_Dir;
                 }
                 catch (Exception ex) {
                     return false;

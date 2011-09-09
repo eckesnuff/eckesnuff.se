@@ -1,0 +1,10 @@
+﻿@model System.Web.Hosting.VirtualDirectory
+           @{
+               Layout=null;
+           }
+<h2>Index</h2>
+<ul>
+@foreach (System.Web.Hosting.VirtualFile file in Model.Files) {
+    <li><a href="@string.Format("/dropbox{0}",file.VirtualPath)">@file.Name</a></li>
+}
+</ul>

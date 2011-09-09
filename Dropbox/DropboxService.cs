@@ -71,8 +71,13 @@ namespace EckeSnuff.Dropbox {
         /// </summary>
         private void Authenticate() {
             if (!_isAuthenticated) {
-                _dropclient.Login(_userName, _password);
-                _isAuthenticated=true;
+                try {
+                    _dropclient.Login(_userName, _password);
+                    _isAuthenticated = true;
+                }
+                catch {
+                    throw;
+                }
             }
         }
         #endregion

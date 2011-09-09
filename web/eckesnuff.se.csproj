@@ -141,9 +141,9 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\GuestBookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageGalleryController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\Properties\FileBrowserController.cs" />
-    <Compile Include="Controllers\TestVPPController.cs" />
     <Compile Include="Entities\FlickrItem.cs" />
     <Compile Include="Entities\RssItem.cs" />
     <Compile Include="Global.asax.cs">
@@ -442,6 +442,7 @@
     <Content Include="Areas\BrickPile.UI\Styles\reset.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\bg.jpg" />
+    <Content Include="Images\icons.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\madtwitter.png" />
     <Content Include="Images\twitter.png" />
@@ -479,6 +480,9 @@
     <Content Include="Views\GuestBook\CommentList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileManager.cshtml" />
     <Content Include="Views\FileBrowser\Open.cshtml" />
+    <Content Include="Views\Shared\_FileLister.cshtml" />
+    <Content Include="Views\ImageGallery\Index.cshtml" />
+    <Content Include="Views\FileBrowser\OpenTinyMceDialog.cshtml" />
     <None Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -494,7 +498,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\TestVPP\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Page\Index.cshtml" />

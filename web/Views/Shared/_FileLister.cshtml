@@ -1,0 +1,23 @@
+﻿@model System.Web.Hosting.VirtualDirectory
+@{var enableSelectFolders = (bool)(ViewData["EnableSelectFolders"] ??false);}
+<ul>
+@foreach (System.Web.Hosting.VirtualDirectory dir in Model.Directories) {
+    <li class="dir"><a href="@dir.VirtualPath">@dir.Name</a>
+    @if(enableSelectFolders){
+        <input type="button" class="select" data-val="@string.Format("/dropbox{0}",dir.VirtualPath)"  value="Select" />
+    }
+    </li>
+}
+@foreach (System.Web.Hosting.VirtualFile file in Model.Files) {
+    <li class="file @GetExtension(file.Name)">@file.Name<input type="button" class="select" data-val="@string.Format("/dropbox{0}",file.VirtualPath)" value="Select" /></li>
+}
+</ul>
+
+@helper GetExtension(string filename)
+{
+    var extension=System.IO.Path.GetExtension(filename);
+    if(extension.StartsWith(".")){
+        extension = extension.Remove(0,1);
+    }
+    @extension;
+}

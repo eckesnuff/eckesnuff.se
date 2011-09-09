@@ -3,17 +3,47 @@
 @Html.TextBoxFor(x => Model, new { @readonly = true, @class = "text-box" }) <input type="button" value=".." id="@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')_button" />
 <script type="text/javascript">
     $(document).ready(function () {
+        var propertyControl=$('#@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')');
+        var resultContainer=$('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result')
+        function close(){
+            resultContainer.html('');
+            resultContainer.find('li a').die('click');
+        }
         $('#@ViewData.TemplateInfo.HtmlFieldPrefix.Replace('.','_')_button').click(function () {
-            $('@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result').hide();
+            resultContainer.hide(); 
             $.ajax({
                 url: '/filebrowser/open',
                 success: function (data) {
-                    $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result').html(data);
-                    $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result').show();
-                    $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result li a').click(function () {
-                        $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")').val($(this).attr('data-val'));
-                        $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Name")').val($(this).text());
-                        $('#@ViewData.TemplateInfo.GetFullHtmlFieldId("Id")_Result').hide();
+                    resultContainer.html(data).show();
+                    resultContainer.find('input.cancel').click(function(){
+                        close();
+                        return false;
+                    });
+                    resultContainer.find('li a').live('click',function () {
+                        var anchor = $(this);
+                        var children = anchor.siblings('ul');
+                        if(children.length>0){
+                            children.slideUp(function(){
+                                $(this).remove();
+                            });
+                        }
+                        else{
+                            var selectedPath = $(this).attr('href');
+                            $.ajax({
+                                url: '/filebrowser/getcontent?path='+selectedPath,
+                                success: function (data) {
+                                    if($(data).find('li').length==0)
+                                        return;
+                                    var list=anchor.parent('li').append(data);
+                                    list.find('ul').hide().slideDown();
+                                }
+                            });
+                        }
+                        return false;
+                    });
+                    resultContainer.find('li input.select').live('click',function () {
+                        propertyControl.val(($(this).attr('data-val')));
+                        close();
                         return false;
                     });
                 }

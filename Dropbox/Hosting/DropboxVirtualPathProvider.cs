@@ -81,8 +81,10 @@ namespace EckeSnuff.Dropbox.Hosting {
         ///   <c>true</c> if [is path virtual] [the specified virtual path]; otherwise, <c>false</c>.
         /// </returns>
         private bool IsPathVirtual(string virtualPath) {
+            if(string.IsNullOrEmpty(virtualPath))
+                return false;
             var checkPath = VirtualPathUtility.ToAppRelative(virtualPath);
-            return checkPath.StartsWith(VirtualPath, StringComparison.InvariantCultureIgnoreCase);
+            return checkPath.StartsWith(VirtualPathUtility.Combine(VirtualPath,"public/"), StringComparison.InvariantCultureIgnoreCase);
         }
         public string GetPath(string virtualPath) {
             //return VirtualPathUtility.Combine("/" + RootFolder + "/",

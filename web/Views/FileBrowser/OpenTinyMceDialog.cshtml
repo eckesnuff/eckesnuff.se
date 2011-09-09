@@ -1,0 +1,113 @@
+﻿@model System.Web.Hosting.VirtualDirectory
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Select File</title>
+<style>
+    .filebrowser ul { list-style-type: none; width:80%;padding-top:1em;overflow:hidden;}
+    .filebrowser ul ul{width:100%;}
+    .filebrowser li {
+    	padding-left:28px; display:block;overflow:hidden;margin-bottom:.5em;
+        background: transparent url(/images/icons.png) no-repeat;
+        background-position: 4px 4px;
+    }
+    li.file a { background: none; }
+    li.file.jpg,  li.file.gif, li.file.png { background-position: 4px -425px; }
+    li.file.pdf { background-position: 4px -254px; }
+    li.file.docx { background-position: 4px -81px; }
+    li.file.xlsx { background-position: 4px -339px; }
+    li.file.pptx { background-position: 4px -339px; }
+    li.file.pptx { background-position: 4px -167px; }
+    li.dir { background-position: 4px -512px; }
+    
+    input[type="submit"]:not(.cancel){
+        padding:6px;
+        float:right;
+    }
+    div.filebrowser div{padding:1em;}
+</style>
+    <script type="text/javascript" src="/Areas/BrickPile.UI/Scripts/jquery-1.5.1.js"></script>
+    <script type="text/javascript" src="/Areas/BrickPile.UI/Scripts/tiny_mce/tiny_mce_popup.js"></script>
+    <script type="text/javascript">
+        var FileBrowserDialogue = {
+            init: function () {
+                // Here goes your code for setting your custom things onLoad.
+            },
+            mySubmit: function (value) {
+                //var URL = document.my_form.my_field.value;
+                var win = tinyMCEPopup.getWindowArg("window");
+
+                // insert information now
+                win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = value;
+
+                // are we an image browser
+                if (typeof (win.ImageDialog) != "undefined") {
+                    // we are, so update image dimensions...
+                    if (win.ImageDialog.getImageData)
+                        win.ImageDialog.getImageData();
+
+                    // ... and preview if necessary
+                    if (win.ImageDialog.showPreviewImage)
+                        win.ImageDialog.showPreviewImage(URL);
+                }
+
+                // close popup window
+                tinyMCEPopup.close();
+            },
+            close: function(){
+                tinyMCEPopup.close();
+            }
+        }
+
+        tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
+        $(document).ready(function () {
+            $('li a').live('click', function () {
+                var anchor = $(this);
+                var children = anchor.siblings('ul');
+                if (children.length > 0) {
+                    children.slideUp(function () {
+                        $(this).remove();
+                    });
+                }
+                else {
+                    var selectedPath = $(this).attr('href');
+                    $.ajax({
+                        url: '/filebrowser/getcontent?path=' + selectedPath,
+                        success: function (data) {
+                            if ($(data).find('li').length == 0)
+                                return;
+                            var list = anchor.parent('li').append(data);
+                            list.find('ul').hide().slideDown();
+                        }
+                    });
+                }
+                return false;
+            });
+            $('li input.select').live('click', function () {
+                FileBrowserDialogue.mySubmit(($(this).attr('data-val')))
+            });
+            $('input.cancel').click(function () {
+                FileBrowserDialogue.close();
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="overlay filebrowser">
+<aside>
+    <h1>Select Item</h1>
+    <div>
+        @Html.Partial("_FileLister",Model, new ViewDataDictionary {{"OnlyFiles",true} })
+        <input type="submit" class="cancel" value="cancel" />
+    </div>
+</aside>
+</div>
+</body>
+</html>
+

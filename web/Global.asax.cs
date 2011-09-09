@@ -12,6 +12,10 @@ namespace EckeSnuff {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
             filters.Add(new HandleErrorAttribute());
         }
+        public static void RegisterViewEngines(ViewEngineCollection viewEngines) {
+            viewEngines.Clear();
+            viewEngines.Add(new RazorViewEngine());
+        }
 
         public static void RegisterRoutes(RouteCollection routes) {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
