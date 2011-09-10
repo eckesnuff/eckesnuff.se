@@ -61,8 +61,6 @@
     <Compile Include="Hosting\DropboxVirtualPathProvider.cs" />
     <Compile Include="IDropboxService.cs" />
     <Compile Include="MimeMapping.cs" />
-    <Compile Include="Models\MetaData.cs" />
-    <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticFileHandler.cs" />
   </ItemGroup>

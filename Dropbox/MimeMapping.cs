@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace EckeSnuff.Utils.DropBox {
+namespace EckeSnuff.Dropbox {
     public class MimeMapping {
         private static Hashtable _extensionToMimeMappingTable;
         /// <summary>

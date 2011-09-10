@@ -4,7 +4,6 @@ using System.IO;
 using System.Web;
 using System.Web.Hosting;
 using EckeSnuff.Dropbox.Hosting;
-using EckeSnuff.Utils.DropBox;
 
 namespace EckeSnuff.Dropbox {
     public class StaticFileHandler : IHttpHandler {

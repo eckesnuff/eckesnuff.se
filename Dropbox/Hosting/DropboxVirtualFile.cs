@@ -55,7 +55,7 @@ namespace EckeSnuff.Dropbox.Hosting {
         public string PhysicalPath {
             get {
                 if (string.IsNullOrEmpty(Name)) {
-                    throw new ArgumentNullException("Name");
+                    throw new ArgumentException("Name cannot be null or empty");
                 }
                 return
                     Path.Combine(
@@ -80,7 +80,7 @@ namespace EckeSnuff.Dropbox.Hosting {
                 try {
                     return !string.IsNullOrEmpty(MetaData.Path)&&!MetaData.Is_Dir;
                 }
-                catch (Exception ex) {
+                catch (Exception) {
                     return false;
                 }
             }

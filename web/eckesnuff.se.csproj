@@ -446,7 +446,6 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\madtwitter.png" />
     <Content Include="Images\twitter.png" />
-    <Content Include="license.txt" />
     <Content Include="Scripts\common.js" />
     <Content Include="Images\fancybox\blank.gif" />
     <Content Include="Images\fancybox\fancybox-x.png" />

@@ -1,25 +1,14 @@
 using System;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Hosting;
-using EPiServer.Web.Hosting;
 
 namespace EckeSnuff.Dropbox.Hosting {
     [AspNetHostingPermission(SecurityAction.Demand, Level = AspNetHostingPermissionLevel.Medium)]
     [AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.High)]
     public class DropboxVirtualPathProvider : VirtualPathProvider {
         private readonly IDropboxService _service;
-        //public DropboxVirtualPathProvider(string name, NameValueCollection config)
-        //    : base(name, config) {
-        //    _service=
-        //   new DropboxService(ConfigurationManager.AppSettings["DropboxAppKey"],
-        //                       ConfigurationManager.AppSettings["DropboxAppSecret"],
-        //                       ConfigurationManager.AppSettings["DropboxUserName"],
-        //                       ConfigurationManager.AppSettings["DropboxPassword"]);
-        //    ValidateAndSetupConfigParams();
-        //}
         public DropboxVirtualPathProvider(IDropboxService service) {
             _service=service;
         }
@@ -95,7 +84,7 @@ namespace EckeSnuff.Dropbox.Hosting {
             if (IsPathVirtual(virtualDir)) {
                 var dir = new DropboxVirtualDirectory(virtualDir, this, _service);
                 return dir.Exists;
-            }
+            } 
             return Previous.DirectoryExists(virtualDir);
         }
     }
