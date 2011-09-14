@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Web;
@@ -14,6 +15,14 @@ namespace EckeSnuff.Dropbox {
         public bool IsReusable {
             get { return true; }
         }
+        public string PublicLink {
+            get { return ConfigurationManager.AppSettings["DropboxPublicLink"]; }
+        }
+        
+
+        public int BypassFileSize {
+            get { return int.Parse(ConfigurationManager.AppSettings["BypassFileSize"] ?? "0"); }
+        }
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
         /// </summary>
@@ -24,6 +33,9 @@ namespace EckeSnuff.Dropbox {
                 HostingEnvironment.VirtualPathProvider.GetFile(context.Request.FilePath) as DropboxVirtualFile;
             if (virtualFile==null|| !virtualFile.Exists) {
                 throw new HttpException(404, "File not found");
+            }
+            if (virtualFile.Size>1024*BypassFileSize) {
+                context.Response.Redirect(string.Format(PublicLink, virtualFile.MetaData.Path.Remove(0, 8)), true);
             }
             var lastWriteTime = File.GetLastWriteTime(virtualFile.PhysicalPath);
             var lastModified = new DateTime(lastWriteTime.Year, lastWriteTime.Month, lastWriteTime.Day,

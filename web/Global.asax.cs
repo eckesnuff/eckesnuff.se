@@ -31,11 +31,6 @@ namespace EckeSnuff {
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
                 );
-                System.Web.Hosting.HostingEnvironment.RegisterVirtualPathProvider(
-                new DropboxVirtualPathProvider(new DropboxService(ConfigurationManager.AppSettings["DropboxAppKey"],
-                                                                  ConfigurationManager.AppSettings["DropboxAppSecret"],
-                                                                  ConfigurationManager.AppSettings["DropboxUserName"],
-                                                                  ConfigurationManager.AppSettings["DropboxPassword"])));
         }
 
         protected void Application_Start() {
@@ -43,6 +38,14 @@ namespace EckeSnuff {
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+            var dropBoxVpp =
+                new DropboxVirtualPathProvider(new DropboxService(ConfigurationManager.AppSettings["DropboxAppKey"],
+                                                                  ConfigurationManager.AppSettings["DropboxAppSecret"],
+                                                                  ConfigurationManager.AppSettings["DropboxUserName"],
+                                                                  ConfigurationManager.AppSettings["DropboxPassword"]));
+            System.Web.Hosting.HostingEnvironment.RegisterVirtualPathProvider(dropBoxVpp);
+            dropBoxVpp.SetupScheduler();
+
         }
     }
 }

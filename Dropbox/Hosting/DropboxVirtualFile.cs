@@ -34,6 +34,7 @@ namespace EckeSnuff.Dropbox.Hosting {
         public virtual string Extension { get { return MetaData.Extension; } }
         public virtual string FileSize { get { return MetaData.Size; } }
         public virtual long Size { get { return MetaData.Bytes; } }
+        public string PublicUrl { get { return MetaData.Path; } }
 
 
         #region public override string Name
