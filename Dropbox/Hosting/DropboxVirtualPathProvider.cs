@@ -125,15 +125,20 @@ namespace EckeSnuff.Dropbox.Hosting {
             return Previous.DirectoryExists(virtualDir);
         }
         #endregion
+        #region public void SetupScheduler()
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetupScheduler() {
             ISchedulerFactory schedFact = new StdSchedulerFactory();
             var sched = schedFact.GetScheduler();
             sched.Start();
-            var job = new JobDetail("UpdateFiles", typeof (UpdateLocalFiles));
+            var job = new JobDetail("UpdateFiles", typeof(UpdateLocalFiles));
             job.JobDataMap.Add("Provider", this);
             var trigger = TriggerUtils.MakeHourlyTrigger(1);
             trigger.Name = "minuteTrigger";
-            sched.ScheduleJob(job,trigger);
+            sched.ScheduleJob(job, trigger);
         }
+        #endregion
     }
 }
