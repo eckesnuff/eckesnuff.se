@@ -1,10 +1,11 @@
-﻿@model BrickPile.UI.Web.ViewModels.IViewModel<BrickPile.Domain.Models.IPageModel>
+﻿@model EckeSnuff.ViewModels.IBaseViewModel<BrickPile.Domain.Models.IPage>
 @using BrickPile.UI.Common
+@using BrickPile.UI.Web.Mvc.Html
 <ul id="nav">
 @{var i = 0;}
-@foreach (var node in Model.StructureInfo.HierarchicalStructure) {
+@foreach (var node in Model.NavigationContext.AsHierarchy()) {
     <li class="item_@(++i)">
-    @if (!node.Entity.Equals(Model.CurrentModel)) {
+    @if (!node.Entity.Equals(Model.CurrentPage)) {
         @Html.ActionLink(node.Entity);
         
     }
@@ -14,4 +15,6 @@
     </li>
 }
 </ul>
+
+
 

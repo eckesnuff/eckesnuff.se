@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BrickPile.UI.Web.ViewModels;
 using EckeSnuff.Entities;
+using TweetSharp;
 
 namespace EckeSnuff.ViewModels {
     /// <summary>
@@ -14,8 +15,8 @@ namespace EckeSnuff.ViewModels {
 		 *  Properties 
 		 * *******************************************************************/
         string Title { get; set; }
-        IList<RssItem> Tweets { get; set; }
         IList<FlickrItem> Flickr { get; set; }
+        IEnumerable<TwitterStatus> Tweets { get; set; }
         /* *******************************************************************
 		 *  Methods 
 		 * *******************************************************************/

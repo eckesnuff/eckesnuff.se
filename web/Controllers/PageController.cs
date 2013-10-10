@@ -11,8 +11,9 @@ namespace EckeSnuff.Controllers
             _structureInfo = structureInfo;
         }
 
-        public ActionResult Index(Page model) {
-            return View(new ContentViewModel(model,_structureInfo));
+        public ActionResult Index(StandardPage currentPage) {
+            var t =new ContentViewModel(currentPage) { NavigationContext = _structureInfo.NavigationContext };
+            return View(t);
         }
     }
 }

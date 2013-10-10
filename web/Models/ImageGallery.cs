@@ -2,7 +2,7 @@
 using BrickPile.Domain;
 
 namespace EckeSnuff.Models {
-    [PageModel("ImageGallery")]
+    [ContentType(Name="ImageGallery")]
     public class ImageGallery:BaseModel {
         [UIHint("FileManager")]
         [Display(Name="DropboxPath")]
