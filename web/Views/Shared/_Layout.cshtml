@@ -6,38 +6,41 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>@Model.Title</title>
-    <meta name="description" content="@Model.CurrentModel.MetaDescription" />
+    <meta name="description" content="@Model.CurrentPage.Metadata.Description" />
     @Html.Raw(Bundle.Css()
-        .Add(Url.Content("~/Styles/reset.css"))
-        .Add(Url.Content("~/Styles/typography.css"))
-        .Add(Url.Content("~/Styles/main.css"))
-        .Add(Url.Content("~/Styles/jquery.fancybox-1.3.4.css"))
-        .Render("~/Styles/master.css"))
+                .Add(Url.Content("~/content/Styles/reset.css"))
+                .Add(Url.Content("~/content/Styles/typography.css"))
+                .Add(Url.Content("~/content/Styles/main.css"))
+                .Add(Url.Content("~/content/Styles/jquery.fancybox-1.3.4.css"))
+                .Render("~/content/Styles/master.css"))
     @Html.Raw(Bundle.JavaScript()
-        .Add(Url.Content("~/scripts/jquery-1.4.4.min.js"))
-        .Add(Url.Content("~/scripts/jquery.easing-1.3.js"))
-        .Add(Url.Content("~/scripts/jquery.mousewheel-3.0.4.js"))
-        .Add(Url.Content("~/scripts/jquery.fancybox-1.3.4.js"))
-        .Add(Url.Content("~/scripts/common.js"))
-        .Render("~/Scripts/master.js"))
+        .Add(Url.Content("~/content/scripts/jquery-1.4.4.min.js"))
+        .Add(Url.Content("~/content/scripts/jquery.easing-1.3.js"))
+        .Add(Url.Content("~/content/scripts/jquery.mousewheel-3.0.4.js"))
+        .Add(Url.Content("~/content/scripts/jquery.fancybox-1.3.4.js"))
+                .Add(Url.Content("~/content/scripts/common.js"))
+                .Render("~/content/Scripts/master.js"))
 </head>
 <body>
     <div id="content">
-        <a href="/"><img class="logo" src="@Url.Content("~/images/logo.png")" alt="eckesnuff.se" /></a>             
+        <a href="/"><img class="logo" src="@Url.Content("~/content/images/logo.png")" alt="eckesnuff.se" /></a>             
         @Html.Partial("_Navigation")
         <div class="main">
-            <h1>@Model.CurrentModel.Heading</h1>
-            @Html.Raw(Model.CurrentModel.Content)
+            <h1>@Model.CurrentPage.Heading</h1>
+            @Html.Raw(Model.CurrentPage.Content)
             @RenderBody()
         </div>
-        <div class="additional twitter">
-            <a href="http://www.twitter.com/eckesnuff"><img class="twitter" src="@Url.Content("~/images/madtwitter.png")" alt="Follow me on twitter"/></a>
-            <ul>
-            @foreach (var tweet in Model.Tweets.Take(10) ) {
-                <li class="@tweet.Ticks">@Html.Raw(tweet.Description)</li>
-            }
-            </ul>
-        </div>
+        @if (Model.Tweets != null) {
+            <div class="additional twitter">
+                <a href="http://www.twitter.com/eckesnuff"><img class="twitter" src="@Url.Content("~/content/images/madtwitter.png")" alt="Follow me on twitter"/></a>
+                <ul>
+
+                    @foreach (var tweet in Model.Tweets.Take(8)) {
+                        <li class="@tweet.CreatedDate.Ticks"><span>@tweet.CreatedDate.ToLocalTime()</span>@Html.Raw(tweet.TextAsHtml)</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
     <div id="footer">
     <ul>

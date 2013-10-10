@@ -3,10 +3,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using BrickPile.Domain;
 using BrickPile.Domain.Models;
+using EckeSnuff.Controllers;
 
 namespace EckeSnuff.Models {
-    [PageModel("Comment", Description="Comment")]
-    public class Comment : PageModel {
+    [ContentType(Name="Comment", ControllerType=typeof(GuestBookController))]
+    public class Comment : Page {
         #region public virtual DateTime PublishDate
         /// <summary>
         /// Get/Sets the PublishDate of the Comment

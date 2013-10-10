@@ -1,51 +1,27 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Hosting;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using EckeSnuff.Dropbox;
-using EckeSnuff.Dropbox.Hosting;
+using BrickPile.UI.Web.Hosting;
+using Dropbox;
+using Dropbox.Hosting;
 
 namespace EckeSnuff {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
-
     public class MvcApplication : System.Web.HttpApplication {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
-            filters.Add(new HandleErrorAttribute());
-        }
-        public static void RegisterViewEngines(ViewEngineCollection viewEngines) {
-            viewEngines.Clear();
-            viewEngines.Add(new RazorViewEngine());
-        }
-
-        public static void RegisterRoutes(RouteCollection routes) {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("dropbox/{*pathInfo}");
-            routes.MapRoute(
-                "Ajax_Handler",
-                "ajax/{action}/{ticks}",
-                new {controller = "Ajax", action = "index", ticks = ""}
-                );
-
-            routes.MapRoute(
-                "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-                );
-        }
-
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
 
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
-            var dropBoxVpp =
-                new DropboxVirtualPathProvider(new DropboxService(ConfigurationManager.AppSettings["DropboxAppKey"],
-                                                                  ConfigurationManager.AppSettings["DropboxAppSecret"],
-                                                                  ConfigurationManager.AppSettings["DropboxUserName"],
-                                                                  ConfigurationManager.AppSettings["DropboxPassword"]));
-            System.Web.Hosting.HostingEnvironment.RegisterVirtualPathProvider(dropBoxVpp);
-            dropBoxVpp.SetupScheduler();
-
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            HostingEnvironment.RegisterVirtualPathProvider(new DropboxVirtualPathProvider());
+            new DropboxSync().SetupScheduler();
         }
     }
 }

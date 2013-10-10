@@ -4,9 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.Hosting;
-using EckeSnuff.Dropbox.Hosting;
+using Dropbox.Hosting;
 
-namespace EckeSnuff.Dropbox {
+namespace Dropbox {
     public class StaticFileHandler : IHttpHandler {
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.
@@ -15,13 +15,9 @@ namespace EckeSnuff.Dropbox {
         public bool IsReusable {
             get { return true; }
         }
-        public string PublicLink {
-            get { return ConfigurationManager.AppSettings["DropboxPublicLink"]; }
-        }
-        
 
         public int BypassFileSize {
-            get { return int.Parse(ConfigurationManager.AppSettings["BypassFileSize"] ?? "0"); }
+            get { return int.Parse(ConfigurationManager.AppSettings["DropboxBypassFileSize"] ?? "0"); }
         }
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
@@ -34,10 +30,11 @@ namespace EckeSnuff.Dropbox {
             if (virtualFile==null|| !virtualFile.Exists) {
                 throw new HttpException(404, "File not found");
             }
-            if (virtualFile.Size>1024*BypassFileSize) {
-                context.Response.Redirect(string.Format(PublicLink, virtualFile.MetaData.Path.Remove(0, 8)), true);
+            if (virtualFile.MetaData.Bytes > 1024 * BypassFileSize) {
+                var share = virtualFile.GetSharedUrl();
+                context.Response.Redirect("http://dl.dropboxusercontent.com" + share.PathAndQuery, true);
             }
-            var lastWriteTime = File.GetLastWriteTime(virtualFile.PhysicalPath);
+            var lastWriteTime = virtualFile.MetaData.ModifiedDate;
             var lastModified = new DateTime(lastWriteTime.Year, lastWriteTime.Month, lastWriteTime.Day,
                                             lastWriteTime.Hour, lastWriteTime.Minute, lastWriteTime.Second, 0);
 
@@ -48,8 +45,8 @@ namespace EckeSnuff.Dropbox {
 
             var etag = GenerateETag(lastModified, now);
 
-            SetCacheParamters(context, MimeMapping.GetMimeMapping(virtualFile.PhysicalPath),
-                              virtualFile.PhysicalPath, lastModified, etag);
+            SetCacheParamters(context, MimeMapping.GetMimeMapping(virtualFile.MetaData.Path),
+                              virtualFile.MetaData.Path, lastModified, etag);
 
             using (Stream stream = virtualFile.Open()) {
                 stream.CopyTo(context.Response.OutputStream);
@@ -68,7 +65,6 @@ namespace EckeSnuff.Dropbox {
         /// <param name="etag">The etag.</param>
         private void SetCacheParamters(HttpContext context, string mimeType, string localPath, DateTime lastModified, string etag) {
             context.Response.ContentType = mimeType;
-            context.Response.AddFileDependency(localPath);
             context.Response.Cache.SetExpires(DateTime.Now.AddDays(3.0));
             context.Response.Cache.SetLastModified(lastModified);
             context.Response.Cache.SetETag(etag);

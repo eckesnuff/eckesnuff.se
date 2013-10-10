@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web.Mvc;
-using BrickPile.UI;
-using EckeSnuff.Entities;
-using EckeSnuff.Helpers;
-using EckeSnuff.Models;
+using EckeSnuff.Services;
 
 namespace EckeSnuff.Controllers
 {
     public class AjaxController : Controller {
-        private readonly IStructureInfo _structureInfo;
-        public AjaxController(IStructureInfo structureInfo) {
-            _structureInfo = structureInfo;
-        }
         public JsonResult Tweets(long? ticks) {
-            var home = (Home)_structureInfo.RootModel;
-            var tweets = XmlList.GetFeed<RssItem>(home.TwitterFeed, false);
-            List<RssItem> result = tweets.FindAll(x => x.Ticks > ticks);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var tweets = Twitter.Instance.GetTweets(10);
+            var result = tweets.Where(x => x.CreatedDate.Ticks > ticks);
+            return
+                Json(
+                    result.Select(
+                        x =>
+                        new
+                        {
+                            CreatedDate = x.CreatedDate.ToLocalTime().ToString(),
+                            x.CreatedDate.Ticks,
+                            Description = x.TextAsHtml
+                        }), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -5,8 +5,8 @@ using EckeSnuff.Models;
 
 namespace EckeSnuff.ViewModels {
     public class GuestBookViewModel :BaseViewModel<GuestBook> {
-        public GuestBookViewModel(GuestBook model, IStructureInfo structureInfo, IEnumerable<Comment> comments)
-            : base(model, structureInfo) {
+        public GuestBookViewModel(GuestBook model, IEnumerable<Comment> comments)
+            : base(model) {
             Comments = comments;
         }
 

@@ -1,5 +1,5 @@
 ﻿@model EckeSnuff.ViewModels.GuestBookViewModel
-    @using (Html.BeginForm("comment", "GuestBook",new {model=Model.CurrentModel}, FormMethod.Post)) {
+    @using (Html.BeginForm("comment", "GuestBook",new {model=Model.CurrentPage}, FormMethod.Post)) {
 
             <div class="comment-form">
                 @Html.EditorFor(x => x.CurrentComment)
@@ -15,7 +15,7 @@
     <ol class="paging">
         @for(var i = 1; i <= Math.Ceiling(Model.Comments.Count()/3.0); i++) {
             <li @(i==Model.CurrentPage)?class="selected":>
-            @Html.ActionLink(i.ToString(), "index", new {model=Model.CurrentModel, page = i })
+            @Html.ActionLink(i.ToString(), "index", new {model=Model.CurrentPage, page = i })
         </li>
         }
     </ol>

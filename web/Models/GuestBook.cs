@@ -1,7 +1,8 @@
 using BrickPile.Domain;
+using EckeSnuff.Controllers;
 
 namespace EckeSnuff.Models {
-    [PageModel("GuestBook", Description="My GuestBook")]
+    [ContentType(Name= "Guestbook", ControllerType=typeof(GuestBookController))]
     public class GuestBook:BaseModel {
     }
 }

@@ -1,8 +1,9 @@
 using BrickPile.Domain;
+using EckeSnuff.Controllers;
 
 namespace EckeSnuff.Models {
-    [PageModel("Page",Description="Standard page")]
-    public class Page : BaseModel {
+    [ContentType(Name = "Standard page",ControllerType = typeof(PageController))]
+    public class StandardPage : BaseModel {
     }
 
 }

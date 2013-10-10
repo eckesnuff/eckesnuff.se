@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace EckeSnuff.Dropbox {
+namespace Dropbox {
     public class MimeMapping {
         private static Hashtable _extensionToMimeMappingTable;
         /// <summary>
@@ -20,7 +20,7 @@ namespace EckeSnuff.Dropbox {
             string text1 = null;
             int num1 = fileName.LastIndexOf('.');
             if ((0 < num1) && (num1 > fileName.LastIndexOf('\\'))) {
-                text1 = (string)MimeMapping._extensionToMimeMappingTable[fileName.Substring(num1)];
+                text1 = (string)MimeMapping._extensionToMimeMappingTable[fileName.Substring(num1).ToLower()];
             }
             if (text1 == null) {
                 text1 = (string)MimeMapping._extensionToMimeMappingTable[".*"];

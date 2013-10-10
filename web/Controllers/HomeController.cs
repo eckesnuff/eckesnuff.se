@@ -1,5 +1,4 @@
 using System.Configuration;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using BrickPile.UI;
 using EckeSnuff.Models;
@@ -13,9 +12,11 @@ namespace EckeSnuff.Controllers {
             _structureInfo = structureInfo;
         }
 
-        public ActionResult Index(Home model) {            
+        public ActionResult Index(Home currentPage) {
+            var t = new ContentViewModel(currentPage)
+            {NavigationContext = _structureInfo.NavigationContext, Title = ConfigurationManager.AppSettings["SiteName"]};
             return
-                View(new ContentViewModel(model, _structureInfo) {Title = ConfigurationManager.AppSettings["SiteName"]});
+                View(t);
         }
 
     }
