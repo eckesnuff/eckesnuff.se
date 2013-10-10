@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Hosting;
+﻿using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BrickPile.UI.Web.Hosting;
-using Dropbox;
 using Dropbox.Hosting;
+using Dropbox.Sync;
 
 namespace EckeSnuff {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
     public class MvcApplication : System.Web.HttpApplication {
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
@@ -21,7 +14,11 @@ namespace EckeSnuff {
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             HostingEnvironment.RegisterVirtualPathProvider(new DropboxVirtualPathProvider());
-            new DropboxSync().SetupScheduler();
+            new DropboxSync().SetupScheduler(new Settings
+            {
+                DocumentIcon = "~/areas/ui/content/images/document.png",
+                IntervalInSeconds = 10
+            });
         }
     }
 }

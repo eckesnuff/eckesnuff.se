@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DropNet.Models;
 
-namespace Dropbox {
+namespace Dropbox.Sync {
     public class FileAction {
         public string DeltaCursor { get; set; }
         public FileAction() {

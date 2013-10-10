@@ -73,8 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DropboxSync.cs" />
-    <Compile Include="FileAction.cs" />
+    <Compile Include="Sync\DropboxSync.cs" />
+    <Compile Include="Sync\FileAction.cs" />
     <Compile Include="Hosting\CustomFileStream.cs" />
     <Compile Include="Hosting\DropboxVirtualDirectory.cs" />
     <Compile Include="Hosting\DropboxVirtualFile.cs" />
@@ -82,8 +82,9 @@
     <Compile Include="MimeMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticFileHandler.cs" />
-    <Compile Include="UpdateRavenJob.cs" />
-    <Compile Include="Worker.cs" />
+    <Compile Include="Sync\Settings.cs" />
+    <Compile Include="Sync\UpdateAssestJob.cs" />
+    <Compile Include="Sync\Worker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

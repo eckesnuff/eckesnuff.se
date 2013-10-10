@@ -12,17 +12,18 @@ using DropNet.Models;
 using Dropbox.Hosting;
 using Raven.Client;
 
-
-namespace Dropbox {
+namespace Dropbox.Sync {
     public class Worker {
         private readonly DropboxVirtualPathProvider _vpp;
         private readonly IDocumentStore _store;
         private readonly ILog _logger;
+        private Settings _settings;
 
-        public Worker() {
+        public Worker(Settings settings) {
             _vpp = new DropboxVirtualPathProvider();
             _store = StructureMap.ObjectFactory.GetInstance<IDocumentStore>();
             _logger = LogManager.GetCurrentClassLogger();
+            _settings = settings;
         }
 
         public void Execute(FileAction action) {
@@ -38,24 +39,25 @@ namespace Dropbox {
         }
 
         private void UploadFiles(List<DeltaEntry> filesForCreationOrUpdate) {
+            if(filesForCreationOrUpdate.Count==0) {
+                return;
+            }
             using (var session = _store.OpenSession()) {
                 foreach (var deltaEntry in filesForCreationOrUpdate) {
                     try {
                         Asset file = GetAsset(session, deltaEntry);
                         var id = file != null ? file.Id : null;
                         var assetChangeDate = file != null ? file.DateUploaded : DateTime.MinValue;
-                        //var diff = file.DateUploaded - deltaEntry.MetaData.UTCDateModified.ToLocalTime();
                         var diff = assetChangeDate - deltaEntry.MetaData.UTCDateModified.ToLocalTime();
                         //TODO remove ToLocal when date i saved in utc
-                        if (diff > new TimeSpan(0) && diff < TimeSpan.FromSeconds(10))
+                        if (diff > new TimeSpan(0) && diff < TimeSpan.FromSeconds(_settings.IntervalInSeconds))
                         {
                             //Skip file if it was uploaded to UI after previous run
                             continue;
                         }
                         var virtualFile = (DropboxVirtualFile) _vpp.GetFile(GetPath(deltaEntry.Path));
-                        var media = virtualFile.MetaData;
                         Stream stream = virtualFile.Open();
-                        if (media.Thumb_Exists) {
+                        if (virtualFile.MetaData.Thumb_Exists) {
                             file = file ?? new Image();
                             using (var image = System.Drawing.Image.FromStream(stream, false, false)) {
                                 ((Image) file).Width = image.Width;
@@ -66,14 +68,14 @@ namespace Dropbox {
                         }
                         else {
                             var icon =
-                                new WebImage(HttpContext.Current.Server.MapPath("~/areas/ui/content/images/document.png"));
+                                new WebImage(HttpContext.Current.Server.MapPath(_settings.DocumentIcon));
                             file = file ?? new Video {Thumbnail = icon.GetBytes()};
                         }
 
-                        file.Name = media.Name;
-                        file.ContentType = MimeMapping.GetMimeMapping(media.Name);
-                        file.ContentLength = media.Bytes;
-                        file.DateUploaded = media.UTCDateModified;
+                        file.Name = virtualFile.MetaData.Name;
+                        file.ContentType = MimeMapping.GetMimeMapping(virtualFile.MetaData.Name);
+                        file.ContentLength = virtualFile.MetaData.Bytes;
+                        file.DateUploaded = virtualFile.MetaData.UTCDateModified;
                         file.VirtualPath = virtualFile.VirtualPath;
                         file.Url = virtualFile.Url;
                         if(id==null)

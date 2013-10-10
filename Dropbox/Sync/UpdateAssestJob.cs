@@ -3,13 +3,12 @@ using System.Web;
 using Dropbox.Hosting;
 using Quartz;
 
-namespace Dropbox {
+namespace Dropbox.Sync {
     [DisallowConcurrentExecution]
-    class UpdateRavenJob : IJob {
+    class UpdateAssestJob : IJob {
         private readonly DropboxVirtualPathProvider _provider;
-        private HttpContext _httpContext;
 
-        public UpdateRavenJob() {
+        public UpdateAssestJob() {
             _provider = new DropboxVirtualPathProvider();
         }
 
@@ -24,7 +23,7 @@ namespace Dropbox {
             File.WriteAllText(path,deltaCursor);
         }
 
-        FileAction PollForChanges() {
+        FileAction GetChanges() {
             var changes = _provider.DropBoxClient.GetDelta(LoadDeltaCursor());
             var fileAction = new FileAction {DeltaCursor = changes.Cursor};
             if(changes.Entries.Count>0) {
@@ -41,10 +40,10 @@ namespace Dropbox {
         }
 
         public void Execute(IJobExecutionContext context) {
-            _httpContext = context.JobDetail.JobDataMap["httpContext"] as HttpContext;
-            HttpContext.Current = _httpContext;
-            var changes = PollForChanges();
-            new Worker().Execute(changes);
+            HttpContext.Current = context.JobDetail.JobDataMap["httpContext"] as HttpContext;
+            var settings = context.JobDetail.JobDataMap["Settings"] as Settings;
+            var changes = GetChanges();
+            new Worker(settings).Execute(changes);
             SetDeltaCursor(changes.DeltaCursor);
         }
     }
