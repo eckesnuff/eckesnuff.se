@@ -37,7 +37,46 @@ namespace Dropbox.Sync {
                     x => x.VirtualPath == path);
             return asset;
         }
+        Asset CreateAsset(DropboxVirtualFile virtualFile,Asset asset) {
+            var mimeType = MimeMapping.GetMimeMapping(virtualFile.MetaData.Name);
+            if(mimeType.Contains("image")) {
+                Stream stream = virtualFile.Open();
+                Image assetImage = (Image) (asset ?? new Image());
+                using (var image = System.Drawing.Image.FromStream(stream, false, false)) {
+                    assetImage.Width = image.Width;
+                    assetImage.Height = image.Height;
+                }
+                var mediumThumbnail = new WebImage(stream).Resize(111, 101).Crop(1, 1);
+                assetImage.Thumbnail = mediumThumbnail.GetBytes();
+                asset = assetImage;
+            }
+            else if(mimeType.Contains("video")) {
+                Video assetVideo = (Video) (asset ?? new Video());
+                var icon = new WebImage(HttpContext.Current.Server.MapPath(_settings.DocumentIcon));
+                assetVideo.Thumbnail = icon.GetBytes();
+                asset = assetVideo;
+            }
+            else if(mimeType.Contains("audio")) {
+                Audio assetAudio = (Audio) (asset ?? new Audio());
+                var icon = new WebImage(HttpContext.Current.Server.MapPath(_settings.DocumentIcon));
+                assetAudio.Thumbnail = icon.GetBytes();
+                asset = assetAudio;
+            }
+            else {
+                Document assetDoc = (Document)(asset ?? new Document());
+                var icon = new WebImage(HttpContext.Current.Server.MapPath(_settings.DocumentIcon));
+                assetDoc.Thumbnail = icon.GetBytes();
+                asset = assetDoc;
+            }
 
+            asset.Name = virtualFile.MetaData.Name;
+            asset.ContentType = MimeMapping.GetMimeMapping(virtualFile.MetaData.Name);
+            asset.ContentLength = virtualFile.MetaData.Bytes;
+            asset.DateUploaded = virtualFile.MetaData.UTCDateModified;
+            asset.VirtualPath = virtualFile.VirtualPath;
+            asset.Url = virtualFile.Url;
+            return asset;
+        }
         private void UploadFiles(List<DeltaEntry> filesForCreationOrUpdate) {
             if(filesForCreationOrUpdate.Count==0) {
                 return;
@@ -56,28 +95,7 @@ namespace Dropbox.Sync {
                             continue;
                         }
                         var virtualFile = (DropboxVirtualFile) _vpp.GetFile(GetPath(deltaEntry.Path));
-                        Stream stream = virtualFile.Open();
-                        if (virtualFile.MetaData.Thumb_Exists) {
-                            file = file ?? new Image();
-                            using (var image = System.Drawing.Image.FromStream(stream, false, false)) {
-                                ((Image) file).Width = image.Width;
-                                ((Image) file).Height = image.Height;
-                            }
-                            var mediumThumbnail = new WebImage(stream).Resize(111, 101).Crop(1, 1);
-                            file.Thumbnail = mediumThumbnail.GetBytes();
-                        }
-                        else {
-                            var icon =
-                                new WebImage(HttpContext.Current.Server.MapPath(_settings.DocumentIcon));
-                            file = file ?? new Video {Thumbnail = icon.GetBytes()};
-                        }
-
-                        file.Name = virtualFile.MetaData.Name;
-                        file.ContentType = MimeMapping.GetMimeMapping(virtualFile.MetaData.Name);
-                        file.ContentLength = virtualFile.MetaData.Bytes;
-                        file.DateUploaded = virtualFile.MetaData.UTCDateModified;
-                        file.VirtualPath = virtualFile.VirtualPath;
-                        file.Url = virtualFile.Url;
+                        file = CreateAsset(virtualFile, file);
                         if(id==null)
                             session.Store(file);
                         
