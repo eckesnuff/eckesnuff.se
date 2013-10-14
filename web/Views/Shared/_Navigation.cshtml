@@ -10,7 +10,7 @@
         
     }
     else {
-        @Html.ActionLink(node.Entity.Metadata.Name, "index", new { model = node.Entity }, new { @class = "selected" });
+        @Html.ActionLink(node.Entity, new { @class = "selected" });
     }
     </li>
 }
