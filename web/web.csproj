@@ -40,14 +40,14 @@
     <Reference Include="AjaxMin">
       <HintPath>..\packages\AjaxMin.4.48.4489.28432\lib\net20\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="BrickPile.Core">
-      <HintPath>..\packages\BrickPile.0.4.0.195-Unstable\lib\net40\BrickPile.Core.dll</HintPath>
+    <Reference Include="BrickPile.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BrickPile.0.5.0.298\lib\net40\BrickPile.Core.dll</HintPath>
     </Reference>
-    <Reference Include="BrickPile.Domain">
-      <HintPath>..\packages\BrickPile.0.4.0.195-Unstable\lib\net40\BrickPile.Domain.dll</HintPath>
+    <Reference Include="BrickPile.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BrickPile.0.5.0.298\lib\net40\BrickPile.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="BrickPile.UI">
-      <HintPath>..\packages\BrickPile.0.4.0.195-Unstable\lib\net40\BrickPile.UI.dll</HintPath>
+    <Reference Include="BrickPile.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BrickPile.0.5.0.298\lib\net40\BrickPile.UI.dll</HintPath>
     </Reference>
     <Reference Include="EcmaScript.NET">
       <HintPath>..\packages\YUICompressor.NET.2.0.0.0\lib\NET20\EcmaScript.NET.dll</HintPath>
@@ -230,6 +230,7 @@
     <Content Include="Areas\UI\Content\images\metadata-bg.png" />
     <Content Include="Areas\UI\Content\images\spinner.gif" />
     <Content Include="Areas\UI\Content\images\sprite.png" />
+    <Content Include="Areas\UI\Content\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Areas\UI\Content\images\upload.png" />
     <Content Include="Areas\UI\Content\normalize.css" />
     <Content Include="Areas\UI\Content\properties\property-pagereference.css" />
@@ -296,6 +297,7 @@
     <Content Include="Areas\UI\Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Areas\UI\Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Areas\UI\Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Areas\UI\Content\ui-datetimepicker.css" />
     <Content Include="Areas\UI\Content\ui-progress-bar.css" />
     <Content Include="Areas\UI\Content\webfonts\svg\museo-sans-500.svg" />
     <Content Include="Areas\UI\Content\webfonts\svg\museo-sans-700.svg" />
@@ -344,6 +346,7 @@
     <Content Include="Areas\UI\Scripts\jquery-1.9.1.min.js" />
     <Content Include="Areas\UI\Scripts\jquery-ui-1.10.0.js" />
     <Content Include="Areas\UI\Scripts\jquery-ui-1.10.0.min.js" />
+    <Content Include="Areas\UI\Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Areas\UI\Scripts\jquery.hoverIntent.js" />
     <Content Include="Areas\UI\Scripts\jquery.nanoscroller.js" />
     <Content Include="Areas\UI\Scripts\jquery.selectbox.js" />
@@ -690,6 +693,24 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\GuestBook\CommentList.cshtml" />
+    <Content Include="Views\GuestBook\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\ImageGallery\Index.cshtml" />
+    <Content Include="Views\Page\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Navigation.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dropbox\Dropbox.csproj">
+      <Project>{8DDAA675-FA55-40FF-AEA1-CCA7AC9F317B}</Project>
+      <Name>Dropbox</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Areas\UI\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -793,22 +814,6 @@
     <None Include="Areas\UI\Styles\webfonts\woff\felttip-roman.woff" />
     <None Include="Areas\UI\Styles\webfonts\woff\museo-sans-500.woff" />
     <None Include="Areas\UI\Styles\webfonts\woff\museo-sans-700.woff" />
-    <Content Include="Views\GuestBook\CommentList.cshtml" />
-    <Content Include="Views\GuestBook\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\ImageGallery\Index.cshtml" />
-    <Content Include="Views\Page\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_Navigation.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dropbox\Dropbox.csproj">
-      <Project>{8DDAA675-FA55-40FF-AEA1-CCA7AC9F317B}</Project>
-      <Name>Dropbox</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
