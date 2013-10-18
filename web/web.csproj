@@ -52,8 +52,8 @@
     <Reference Include="EcmaScript.NET">
       <HintPath>..\packages\YUICompressor.NET.2.0.0.0\lib\NET20\EcmaScript.NET.dll</HintPath>
     </Reference>
-    <Reference Include="FriendlyWebRequester">
-      <HintPath>..\lib\FriendlyWebRequester.dll</HintPath>
+    <Reference Include="FriendlyWebRequester, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FriendlyWebRequester.0.40\lib\net40\FriendlyWebRequester.dll</HintPath>
     </Reference>
     <Reference Include="Hammock.ClientProfile">
       <HintPath>..\packages\TweetSharp.2.3.1\lib\4.0\Hammock.ClientProfile.dll</HintPath>
